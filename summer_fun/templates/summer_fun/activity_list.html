@@ -1,0 +1,50 @@
+{% extends 'summer_fun/base.html' %}
+{% load static %}
+{% block content %}
+<h2> Summer Fun Activity List</h2>
+
+<!--  Search -->
+<h4>Search</h4>
+<form method="GET" action="{% url 'activity_list' %}">
+    {{ search_form  }}
+    <button type="submit">Search for Activity</button>
+</form>
+    <a href="{% url 'activity_list' %}">
+        <button>Clear Search</button> <!--when clicked, go to link above-->
+    </a>
+    <br>
+<br>
+<a href="{% url 'add_activity' %}">Add New Activity</a>
+
+
+
+
+    <h4>List of activities you can select from</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Activity Name</th>
+            <th scope="col">Activity Description</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% if activities %}
+            {% for activity in activities %}
+            <div>
+                <tr> 
+                    <td>{{ activity.activity_name }}</td>
+                    <td>{{ activity.activity_description }}</td>
+                    
+                </tr>
+            </div> 
+            {% empty %}
+            <p> No activities match search term</p>
+            {% endfor %}
+        {% else %}
+        <p>No activies available yet</p>
+           {% endif %}
+    </tbody>
+</table>
+
+    {% endblock %}

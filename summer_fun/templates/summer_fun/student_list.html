@@ -1,0 +1,68 @@
+{% extends 'summer_fun/base.html' %}
+{% load static %}
+{% block content %}
+<h2>Welcome to Summer Fun</h2>
+
+<!--  Search -->
+<h4>Search</h4>
+<form method="GET" action="{% url 'student_list' %}">
+    {{ search_form  }}
+    <button type="submit">Search for Student</button>
+</form>
+    <a href="{% url 'student_list' %}">
+        <button>Clear Search</button> <!--when clicked, go to link above-->
+    </a>
+    <br>
+    <br>
+    <a href="{% url 'add_student' %}">Add New Student</a>
+    
+    <!-- pluralize helps with student vs studentss depending on length-->
+<h3>{{ student.first_name }} {{ student.last_name}}</h3>
+
+
+
+<h4>List of registered students and activities</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Activity One</th>
+            <th scope="col">Activity Two</th>
+            <th scope="col">Activity Three</th>
+            <th scope="col">Activity Four</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if students %}
+            {% for student in students %}
+
+            <div>
+                <tr>
+                    <span id="student-name{{ student.pk }}">
+                        <td><a href="{% url 'student_details' student_pk=student.pk %}">{{ student.first_name }}</a>
+                    </td></span>
+                    
+                    <td>{{ student.last_name }}</td>
+                    <td>{{ student.activity_one }}</td>
+                    <td>{{ student.activity_two }}</td>
+                    <td>{{ student.activity_three }}</td>
+                    <td>{{ student.activity_four }}</td>
+                </tr>
+            </div> 
+            {% empty %}
+            <p> No students match search term</p>
+            {% endfor %}
+        {% else %}
+        <p>No students have registered yet</p>
+           {% endif %}
+    </tbody>
+</table>
+
+
+
+
+
+
+
+{% endblock %}
