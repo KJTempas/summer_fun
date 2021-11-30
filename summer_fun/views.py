@@ -35,25 +35,31 @@ def student_list(request):
         students = Student.objects.order_by(Lower('first_name'))
     return render(request, 'summer_fun/student_list.html', {'students': students, 'search_form':search_form })
 
-def student_details(request, student_pk):
-    student = get_object_or_404(Student, pk=student_pk)
-    return render(request, 'summer_fun/student_details.html', {'student': student})
 
-def add_classes(request, student_pk):
+# def student_details(request, student_pk):
+#     student = get_object_or_404(Student, pk=student_pk)
+#     print(student.first_name) #printing
+#     return render(request, 'summer_fun/student_details.html', {'student': student})
+    
+
+def select_classes(request, student_pk):
+    student =  get_object_or_404(Student, pk=student_pk)
     if request.method == 'POST':
         form = ScheduleForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('student_details')
+            return redirect('student_list')
         else:
-            return render(request, 'summer_fun/add_classes.html', { 'form': form, })
+            return render(request, 'summer_fun/select_classes.html', { 'form': form, })
+    #not a post, but a GET
     form = ScheduleForm
-    return render(request, 'summer_fun/student_details.html', {'form': form })
+    return render(request, 'summer_fun/select_classes.html', {'form': form, 'student': student })
 
-def delete_student(request, student_pk):
-    student = get_object_or_404(Student, pk=student_pk)
-    student.delete()
-    return redirect('student_list')
+
+# def delete_student(request, student_pk):
+#     student = get_object_or_404(Student, pk=student_pk)
+#     student.delete()
+#     return redirect('student_list')
 
 def add_activity(request):
     if request.method == 'POST':

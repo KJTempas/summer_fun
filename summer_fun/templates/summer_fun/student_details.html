@@ -2,25 +2,19 @@
 {% load static %}
 {% block content %}
 
-<h3>Select classes here</h3>
+
 <div class="studentlist-student">
     {{ student }}
 </div>
 
-<form method="POST" action="{% url 'add_classes' student.pk  %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ schedule_form }}
-    <button type="submit">Add Classes</button>
-</form>
 
-
-
-
+<h3> click here to select classes</h3>
+<!--
 <form action="{% url 'delete_student' student.pk %}" method="POST">
     {% csrf_token %}
     <button type='submit' class='delete'>Delete student</button>
 </form>
 
 <script src="{% static 'js/confirm_delete.js' %}"></script>
-
+-->
 {% endblock %}

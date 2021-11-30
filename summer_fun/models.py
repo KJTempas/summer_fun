@@ -45,7 +45,7 @@ class Schedule(models.Model):
         ('2', 'two'),
         ('3', 'three'))
 
-    #session_number = models.TextChoices('SessionNumber', '1 2 3 4')
+
     session = models.CharField(max_length=1, choices=SESSIONS)
     #add later
     #date_entered = models.DateField()

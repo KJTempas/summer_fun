@@ -21,8 +21,9 @@ class NewActivityForm(ModelForm):
 class ScheduleForm(ModelForm):
     class Meta:
         model = Schedule
-        fields = ['student', 'activity', 'session']
-
+        fields = ['session', 'activity']
+# class ScheduleForm(forms.Form):
+#     session =forms.ChoiceField()
 
 # def generateView(request):
 #     if request.method == 'POST':
