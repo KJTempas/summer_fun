@@ -1,0 +1,42 @@
+{% extends 'summer_fun/base.html' %}
+{% load static %}
+{% block content %}
+
+<h3>Select classes here</h3>
+{{ student }}
+<!-- stuck here - trying to get form to display 
+student should be able to select an activity for each session-->
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Session</th>
+            <th scope="col">Activity</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <div>
+            <tr>
+                <td>1</td>
+                <td>{{ student.activity_one }}</td>
+                
+            </tr>
+        </div> 
+            
+            
+    </tbody>
+</table>
+
+<form method="POST" action="{% url 'select_classes' student.pk %}" >
+    {% csrf_token %}
+    
+        {% for field in form %}
+            {{ field }}
+        {% endfor %}
+    
+    <button type="submit">Select these Classes</button>
+</form>
+
+
+{% endblock %}

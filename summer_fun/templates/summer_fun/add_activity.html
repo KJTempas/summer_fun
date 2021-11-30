@@ -1,0 +1,16 @@
+{% extends 'summer_fun/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<h3> Add Activity</h3>
+
+<form method="POST" action="{% url 'add_activity' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ new_activity_form }}
+    <button type="submit">Add Activity</button>
+</form>
+
+
+
+{% endblock %}

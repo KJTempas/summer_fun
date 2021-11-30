@@ -1,0 +1,20 @@
+{% extends 'summer_fun/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="studentlist-student">
+    {{ student }}
+</div>
+
+
+<h3> click here to select classes</h3>
+<!--
+<form action="{% url 'delete_student' student.pk %}" method="POST">
+    {% csrf_token %}
+    <button type='submit' class='delete'>Delete student</button>
+</form>
+
+<script src="{% static 'js/confirm_delete.js' %}"></script>
+-->
+{% endblock %}
