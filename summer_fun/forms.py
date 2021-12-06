@@ -18,19 +18,10 @@ class NewActivityForm(ModelForm):
         model = Activity
         fields = ['activity_name', 'activity_description']
 
-class ScheduleForm(ModelForm):
+class ScheduleForm(forms.ModelForm):
     class Meta:
         model = Schedule
-        fields = ['session', 'activity']
-# class ScheduleForm(forms.Form):
-#     session =forms.ChoiceField()
+        fields = [ 'activity', 'session']
+        #fields = [ 'activity']
+    #could use exclude
 
-# def generateView(request):
-#     if request.method == 'POST':
-#         student_form = StudentForm(request.POST, prefix = "student")
-#         activity_form = ActivityForm(request.POST, prefix = "a")
-#         schedule_form = ScheduleForm(request.POST, prefix = "sch")
-#         if StudentForm.is_valid() and ActivityForm.is_valid() and ScheduleForm.is_valid():
-#            # print "all valdcation passed"
-#             student = student_form.save()
-#             activity_form.cleaned_data["student"]

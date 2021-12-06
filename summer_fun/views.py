@@ -44,17 +44,20 @@ def student_list(request):
 
 def select_classes(request, student_pk):
     student =  get_object_or_404(Student, pk=student_pk)
+    #loop_times =[range(1,3)]
     if request.method == 'POST':
-        form = ScheduleForm(request.POST)
-        if form.is_valid():
-            form.save()
+        schedule_form = ScheduleForm(request.POST)
+        if schedule_form.is_valid():
+            schedule_form.save()
             return redirect('student_list')
         else:
-            return render(request, 'summer_fun/select_classes.html', { 'form': form, })
+            return render(request, 'summer_fun/select_classes.html', { 'schedule_form': schedule_form  })#, 'loop_times': loop_times })
     #not a post, but a GET
-    form = ScheduleForm
-    return render(request, 'summer_fun/select_classes.html', {'form': form, 'student': student })
-
+    schedule_form = ScheduleForm
+    #new_student_form = NewStudentForm # this form appears when rendered below
+    print('hi')
+    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student })#, 'loop_times': loop_times})  #"sessions": range(4)})
+    #return render(request, 'summer_fun/add_student.html', {'new_student_form': new_student_form }) #this appears
 
 # def delete_student(request, student_pk):
 #     student = get_object_or_404(Student, pk=student_pk)
@@ -72,6 +75,7 @@ def add_activity(request):
         else:
             #messages.warning(request, 'Check the data entered')
             return render(request, 'summer_fun/add_activity.html', {'new_activity_form': new_activity_form })
+    #GET request
     new_activity_form = NewActivityForm
     return render(request, 'summer_fun/add_activity.html', {'new_activity_form': new_activity_form })
 
