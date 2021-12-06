@@ -49,14 +49,14 @@ def select_classes(request, student_pk):
     if request.method == 'POST':
         schedule_form = ScheduleForm(request.POST)
         if schedule_form.is_valid():
-            schedule_form.save()
+            schedule = schedule_form.save(commit=False)
+            schedule.student = student
+            schedule.save()
             return redirect('student_list')
         else:
-            return render(request, 'summer_fun/select_classes.html', { 'schedule_form': schedule_form  })#, 'loop_times': loop_times })
+            return render(request, 'summer_fun/select_classes.html', { 'schedule_form': schedule_form , 'student': student, "sessions": range(1,4)}) 
     #not a post, but a GET
     schedule_form = ScheduleForm
-    #new_student_form = NewStudentForm # this form appears when rendered below
-    print('hi')
     return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,4)})
 
 
