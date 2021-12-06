@@ -4,37 +4,21 @@
 
     <h3>Select classes here</h3>
     {{ student }}
-<!-- stuck here - trying to get form to display 
+<!-- stuck here - want session numbers to appear 
 student should be able to select an activity for each session-->
-
-
- <!--   <form method="POST" action="{% url 'select_classes' student.pk %}"  >
-        {% csrf_token %}
-        {% for session in sessions %}
-        {% for field in schedule_form %}   
-            {{ field }}
-        {% endfor %}
-                <br>-->
-        <!--{{ schedule_form }}
-        <button type="submit">Select these Classes</button>
-    </form>  -->
-<!--{% endfor %}--> 
 
 <form method="POST" action="{% url 'select_classes' student.pk %}" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ schedule_form }}
+    {% for session in sessions %}
+        {% for field in schedule_form %} 
+             
+            {{ field }}
+        {% endfor %}
+                <br>   
+    {% endfor %}
     <button type="submit">Add Student</button>
 </form>
 
-<!--https://pythoncircle.com/post/685/for-loop-in-django-template/-->
-<!-- this makes input appear: Session picklist/newline Activity picklist/ Submit button
-<form action = "" method = "post">
-    {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit" value="Submit">
-</form>  -->
 
 {% endblock %}
 

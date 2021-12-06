@@ -44,7 +44,8 @@ def student_list(request):
 
 def select_classes(request, student_pk):
     student =  get_object_or_404(Student, pk=student_pk)
-    #loop_times =[range(1,3)]
+    #loop_times =3
+    
     if request.method == 'POST':
         schedule_form = ScheduleForm(request.POST)
         if schedule_form.is_valid():
@@ -56,8 +57,8 @@ def select_classes(request, student_pk):
     schedule_form = ScheduleForm
     #new_student_form = NewStudentForm # this form appears when rendered below
     print('hi')
-    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student })#, 'loop_times': loop_times})  #"sessions": range(4)})
-    #return render(request, 'summer_fun/add_student.html', {'new_student_form': new_student_form }) #this appears
+    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(4)})
+
 
 # def delete_student(request, student_pk):
 #     student = get_object_or_404(Student, pk=student_pk)

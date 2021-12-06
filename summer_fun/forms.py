@@ -21,7 +21,7 @@ class NewActivityForm(ModelForm):
 class ScheduleForm(forms.ModelForm):
     class Meta:
         model = Schedule
-        fields = [ 'activity', 'session']
+        fields = [  'session', 'activity',]
         #fields = [ 'activity']
     #could use exclude
 
