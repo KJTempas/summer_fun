@@ -57,7 +57,7 @@ def select_classes(request, student_pk):
     schedule_form = ScheduleForm
     #new_student_form = NewStudentForm # this form appears when rendered below
     print('hi')
-    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(4)})
+    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,4)})
 
 
 # def delete_student(request, student_pk):

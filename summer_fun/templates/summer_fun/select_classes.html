@@ -4,19 +4,19 @@
 
     <h3>Select classes here</h3>
     {{ student }}
-<!-- stuck here - want session numbers to appear 
-student should be able to select an activity for each session-->
+
+<!--student should be able to select an activity for each session-->
 
 <form method="POST" action="{% url 'select_classes' student.pk %}" enctype="multipart/form-data">
     {% csrf_token %}
     {% for session in sessions %}
         {% for field in schedule_form %} 
-             
+             {{ session }}
             {{ field }}
         {% endfor %}
                 <br>   
     {% endfor %}
-    <button type="submit">Add Student</button>
+    <button type="submit">Save Schedule</button>
 </form>
 
 
