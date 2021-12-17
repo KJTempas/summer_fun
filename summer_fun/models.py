@@ -20,6 +20,11 @@ class Student(models.Model):
     unique_together = ['first_name', 'last_name']
     activities = models.ManyToManyField(Activity, through='Schedule')
 
+    # @property
+    # def student_schedule(self):
+    #     return Schedule.objects.filter(student = self)
+
+
     def __str__(self):
         return f'Name: {self.first_name} {self.last_name}'
    

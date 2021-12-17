@@ -27,10 +27,10 @@
         <tr>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
-            <th scope="col">Activity One</th>
-            <th scope="col">Activity Two</th>
-            <th scope="col">Activity Three</th>
-            <th scope="col">Activity Four</th>
+            <th scope="col">Session One</th>
+            <th scope="col">Session</th>
+            <th scope="col">SessionThree</th>
+            
         </tr>
     </thead>
     <tbody>
@@ -44,8 +44,8 @@
                     </td></span>
                     
                     <td>{{ student.last_name }}</td>
-                    <td>{{ student.activity_one }}</td>
-                    <td>{{ student.activity_two }}</td>
+                    <td>{{ schedule.student.session.activity }}</td>
+                    <td>{{ student.session.activity }}</td>
                     <td>{{ student.activity_three }}</td>
                    
                 </tr>

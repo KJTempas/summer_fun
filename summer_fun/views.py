@@ -44,20 +44,28 @@ def student_list(request):
 
 def select_classes(request, student_pk):
     student =  get_object_or_404(Student, pk=student_pk)
-    #loop_times =3
     
     if request.method == 'POST':
         schedule_form = ScheduleForm(request.POST)
-        if schedule_form.is_valid():
-            schedule = schedule_form.save(commit=False)
-            schedule.student = student
-            schedule.save()
-            return redirect('student_list')
-        else:
-            return render(request, 'summer_fun/select_classes.html', { 'schedule_form': schedule_form , 'student': student, "sessions": range(1,4)}) 
-    #not a post, but a GET
+        sessions = 3
+        activityData = request.POST.getlist('activity')
+        for instance in range(sessions-1):
+            activity = get_object_or_404(Activity, pk=activityData[instance])
+        
+            createObj = Schedule.objects.create(
+                student = student,
+                session = instance,
+                activity = activity
+            )
+            createObj.save()
+        return redirect('student_list')
+
+    else: #GET
+        schedule_form = ScheduleForm()
+        return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,3)})
+            
     schedule_form = ScheduleForm
-    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,4)})
+    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,3)})
 
 
 # def delete_student(request, student_pk):
