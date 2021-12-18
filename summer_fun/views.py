@@ -33,9 +33,20 @@ def student_list(request):
     else:
         search_form = SearchForm()
         students = Student.objects.order_by(Lower('first_name'))
-    return render(request, 'summer_fun/student_list.html', {'students': students, 'search_form':search_form })
+        for student in students:
+            print(student.first_name)
+            #should yield all the activities and sessions belonging to this student
+            classes= Schedule.objects.filter(student = student)
+            print(classes) #aqueryset
+            for x in classes:
+                print(x.session) #prints 0 or 1...
+                print(x.activity) #prints SUP or Swimming...
+                
+        return render(request, 'summer_fun/student_list.html', {'students': students, 'search_form':search_form ,'classes': classes})
 
+    return render(request, 'summer_fun/student_list.html', {'students': students, 'search_form':search_form , 'classes': classes})
 
+#TODO eventually
 # def student_details(request, student_pk):
 #     student = get_object_or_404(Student, pk=student_pk)
 #     print(student.first_name) #printing

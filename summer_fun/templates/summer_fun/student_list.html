@@ -28,8 +28,8 @@
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Session One</th>
-            <th scope="col">Session</th>
-            <th scope="col">SessionThree</th>
+            <th scope="col">Session Two</th>
+            
             
         </tr>
     </thead>
@@ -44,10 +44,12 @@
                     </td></span>
                     
                     <td>{{ student.last_name }}</td>
-                    <td>{{ schedule.student.session.activity }}</td>
-                    <td>{{ student.session.activity }}</td>
-                    <td>{{ student.activity_three }}</td>
-                   
+                        {% if classes %}
+                            {% for x in classes %}
+                            
+                            <td>  {{ x.activity.activity_name }} </td> 
+                            {% endfor %}
+                        {% endif %}  
                 </tr>
             </div> 
             {% empty %}
