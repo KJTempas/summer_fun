@@ -108,23 +108,14 @@ def run_report(request):
     if request.method =='POST':
         form = ReportForm(request.POST)
         if form.is_valid():
-        #process data here
             activity_term = form.cleaned_data['activity_name']
-            print(activity_term)
             act_id = Activity.objects.get(activity_name = activity_term)
-            print('1',act_id)
             session_num = form.cleaned_data['session_num']
-            print('2',session_num)
             #may need name__iexact=to get case insensitive matches
-            #maybe use filter with  contains??
             students = Schedule.objects.filter(activity=act_id,session= session_num)
-            # print(students)
-            #students = Schedule.objects.filter(session= session_num) #works
-            print(students)
-            for student in students:
-                print(student.student.first_name) 
-                #TODO send this data to new template
-            return render(request, 'summer_fun/student_list.html') # temporary redirectg
-    else: #GET
+    #TODO fix session numbersfrom 0 and 1 to 1 and 2
+    #TODO make choice of activity a dropdown
+            return render(request, 'summer_fun/report_results.html', {'students': students, 'activity': activity_term , 'session': session_num})
+    else: #GET - just show the form
         form = ReportForm()
     return render(request, 'summer_fun/run_report.html', {'form': form})

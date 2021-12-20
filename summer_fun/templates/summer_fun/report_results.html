@@ -1,0 +1,15 @@
+{% extends 'summer_fun/base.html' %}
+{% load static %}
+{% block content %}
+
+<h4> The following students have signed up for {{ activity}} in session number  {{ session }} </h4>
+
+<hr>
+
+{% for student in students %}
+
+    {{ student.student }} <br>
+
+{% endfor %}
+
+{% endblock %}  
