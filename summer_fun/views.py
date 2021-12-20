@@ -14,8 +14,6 @@ def add_student(request):
         new_student_form = NewStudentForm(request.POST)#, instance= Student())
         if new_student_form.is_valid():
             new_student_form.save()
-        #save new Student object from form's data
-            #student = student_form.save()
             return redirect('student_list')
         #return render(request, 'summer_fun/select_classes.html', {'select_form': select_form})
         else:
@@ -26,25 +24,20 @@ def add_student(request):
 
 
 def student_list(request):
-    search_form = SearchForm(request.GET)
-    if search_form.is_valid():
-        search_term = search_form.cleaned_data['search_term']
-        students = Student.objects.filter(first_name__icontains=search_term).order_by('first_name')
-    else:
-        search_form = SearchForm()
-        students = Student.objects.order_by(Lower('first_name'))
-        for student in students:
-            print(student.first_name)
-            #should yield all the activities and sessions belonging to this student
-            classes= Schedule.objects.filter(student = student)
-            print(classes) #aqueryset
-            for x in classes:
-                print(x.session) #prints 0 or 1...
-                print(x.activity) #prints SUP or Swimming...
-                
-        return render(request, 'summer_fun/student_list.html', {'students': students, 'search_form':search_form ,'classes': classes})
-
-    return render(request, 'summer_fun/student_list.html', {'students': students, 'search_form':search_form , 'classes': classes})
+    students = Student.objects.order_by(Lower('first_name'))
+    student_classes ={}
+    for student in students:
+        this_students_classes =[]
+        # all the activities and sessions belonging to this student
+        c= list(Schedule.objects.filter(student = student))
+        for x in c: #loop through schedule objects for this student
+            activity = x.activity.activity_name #extract the activity name
+            this_students_classes.append(activity) #add to listfor this student
+        #dictionary[key]=value
+        student_classes[student]=this_students_classes
+        
+    return render(request, 'summer_fun/student_list.html', { 'student_classes': student_classes})
+       
 
 #TODO eventually
 # def student_details(request, student_pk):
