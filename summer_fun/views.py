@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Student, Activity, Schedule
-from .forms import NewStudentForm, SearchForm, ScheduleForm , NewActivityForm
+from .forms import NewStudentForm, SearchForm, ScheduleForm , NewActivityForm, ReportForm
 from django.db.models.functions import Lower
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def home(request):
@@ -103,4 +104,27 @@ def activity_list(request):
         activities = Activity.objects.all()
     return render(request, 'summer_fun/activity_list.html', {'activities': activities, 'search_form':search_form })
 
-
+def run_report(request):
+    if request.method =='POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+        #process data here
+            activity_term = form.cleaned_data['activity_name']
+            print(activity_term)
+            act_id = Activity.objects.get(activity_name = activity_term)
+            print('1',act_id)
+            session_num = form.cleaned_data['session_num']
+            print('2',session_num)
+            #may need name__iexact=to get case insensitive matches
+            #maybe use filter with  contains??
+            students = Schedule.objects.filter(activity=act_id,session= session_num)
+            # print(students)
+            #students = Schedule.objects.filter(session= session_num) #works
+            print(students)
+            for student in students:
+                print(student.student.first_name) 
+                #TODO send this data to new template
+            return render(request, 'summer_fun/student_list.html') # temporary redirectg
+    else: #GET
+        form = ReportForm()
+    return render(request, 'summer_fun/run_report.html', {'form': form})
