@@ -5,6 +5,7 @@ from .models import Student, Activity, Schedule
 #http://www.learningaboutelectronics.com/Articles/How-to-create-a-drop-down-list-in-a-Django-form.php
 #https://www.geeksforgeeks.org/how-to-use-django-field-choices/
 
+
 class NewStudentForm(ModelForm):
     class Meta:
         model = Student
@@ -27,5 +28,11 @@ class ScheduleForm(forms.ModelForm):
 #current form is like search form;laterversion could have drop down
 # of activity.activity_name as a picklist
 class ReportForm(forms.Form):
-    activity_name = forms.CharField(label='activity name')
+    #activity_name = forms.CharField(label='activity name')
     session_num = forms.IntegerField(label='session number')
+ 
+    activity_list =[]
+    for activity in Activity.objects.all():
+        if activity.activity_name not in activity_list:
+            activity_list.append((activity.activity_name, activity.activity_name))
+    activity_name = forms.ChoiceField(label="Select an activity", choices=activity_list)

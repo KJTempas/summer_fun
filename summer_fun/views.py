@@ -4,6 +4,7 @@ from .forms import NewStudentForm, SearchForm, ScheduleForm , NewActivityForm, R
 from django.db.models.functions import Lower
 from django.http import HttpResponseRedirect
 
+
 # Create your views here.
 def home(request):
     app_name = 'Summer Fun Signup'
@@ -49,12 +50,11 @@ def student_list(request):
 
 def select_classes(request, student_pk):
     student =  get_object_or_404(Student, pk=student_pk)
-    
     if request.method == 'POST':
         schedule_form = ScheduleForm(request.POST)
-        sessions = 3
+        #sessions = 3 #made it a global var
         activityData = request.POST.getlist('activity')
-        for instance in range(sessions-1):
+        for instance in range(num_of_sessions-1):
             activity = get_object_or_404(Activity, pk=activityData[instance])
         
             createObj = Schedule.objects.create(
@@ -66,7 +66,7 @@ def select_classes(request, student_pk):
         return redirect('student_list')
 
     else: #GET
-        schedule_form = ScheduleForm()
+        schedule_form = ScheduleForm() #instance = ?
         return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,3)})
             
     schedule_form = ScheduleForm
@@ -109,12 +109,13 @@ def run_report(request):
         form = ReportForm(request.POST)
         if form.is_valid():
             activity_term = form.cleaned_data['activity_name']
+            print('1',activity_term)
             act_id = Activity.objects.get(activity_name = activity_term)
+            print(act_id)
             session_num = form.cleaned_data['session_num']
             #may need name__iexact=to get case insensitive matches
             students = Schedule.objects.filter(activity=act_id,session= session_num)
     #TODO fix session numbersfrom 0 and 1 to 1 and 2
-    #TODO make choice of activity a dropdown
             return render(request, 'summer_fun/report_results.html', {'students': students, 'activity': activity_term , 'session': session_num})
     else: #GET - just show the form
         form = ReportForm()
