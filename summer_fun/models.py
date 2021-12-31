@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 
 
 class Activity(models.Model):
-    activity_name = models.CharField(max_length=20)#, choices=ACTIVITY_CHOICES)
+    activity_name = models.CharField(max_length=20, unique=True)
     activity_description = models.CharField(max_length=100)
     #location - add later
     

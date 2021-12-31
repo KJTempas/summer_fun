@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from summer_fun.models import Activity
+from summer_fun.models import Activity, Student
 
 # Create your tests here.
 #to run these tests, in summerfun, type python manage.py test
@@ -19,7 +19,7 @@ class TestViewActivitiesPage(TestCase):
 
 class TestAddActivities(TestCase):
 
-    #fixtures = ['test_activities']
+    fixtures = ['test_activities']
 
     def test_add_activity(self):
         new_activity = {
@@ -33,6 +33,44 @@ class TestAddActivities(TestCase):
         #make sure activitylist includes new activity
         self.assertContains(response, 'Snorkeling')
         #pull the activity from the dbase
-        activity_one = Activity.objects.first()
+        activity_last = Activity.objects.last()
         #check its properties
-        self.assertEqual('Snorkeling', activity_one.activity_name)
+        self.assertEqual('Snorkeling', activity_last.activity_name)
+
+        
+    def test_add_activity_does_not_add_duplicate(self):
+        #add duplicate of activity in fixtures
+        new_activity = {
+            'activity_name': 'Stand Up Paddleboard',
+            'activity_description': 'SUP in the bay'
+        }
+        response = self.client.post(reverse('add_activity'), data= new_activity, follow=True)
+        #new_activity should not have added; should be still 3 activities
+        activites_count = Activity.objects.count()
+        self.assertEqual(3, activites_count)
+        
+
+
+class TestAddStudent(TestCase):
+
+    fixtures = ['test_students']
+
+    def test_add_student(self):
+        new_student = {
+            'first_name': 'Grace',
+            'last_name': 'Hopper',
+            'student_email': 'ghopper@gmail.com'
+        }
+        #follow=True means follow redirect in method
+        response = self.client.post(reverse('add_student'), data= new_student, follow=True)
+        #check redirect
+        self.assertTemplateUsed('summer_fun/student_list.html')
+        #make sure activitylist includes new activity
+        self.assertContains(response, 'Grace')
+        #pull the activity from the dbase
+        student_last = Student.objects.last()
+        #check its properties
+        self.assertEqual('Grace', student_last.first_name)
+        student_count = Student.objects.count()
+        #3 students in fixtures + one new student = 4
+        self.assertEqual(4, student_count)

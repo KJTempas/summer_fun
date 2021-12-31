@@ -1,0 +1,29 @@
+[
+    {
+        "model": "summer_fun.student",
+        "pk": 1,
+        "fields":{
+            "first_name": "Joan",
+            "last_name": "Clark",
+            "student_email": "jclark@gmail.com"
+        }
+    },
+    {
+        "model": "summer_fun.student",
+        "pk": 2,
+        "fields":{
+            "first_name": "Margaret",
+            "last_name": "Hamilton",
+            "student_email": "mhamilton@gmail.com"
+        }
+    },
+    {
+        "model": "summer_fun.student",
+        "pk": 3,
+        "fields":{
+            "first_name": "Carol",
+            "last_name": "Shaw",
+            "student_email": "cshaw@gmail.com"
+        }
+    }
+]
