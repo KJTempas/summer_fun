@@ -25,10 +25,9 @@ class ScheduleForm(forms.ModelForm):
         fields = [ 'activity']
     #could use exclude
 
-#current form is like search form;laterversion could have drop down
-# of activity.activity_name as a picklist
+
+#TODO session number dropdown
 class ReportForm(forms.Form):
-    #activity_name = forms.CharField(label='activity name')
     session_num = forms.IntegerField(label='session number')
  
     activity_list =[]

@@ -1,0 +1,29 @@
+[
+    {
+        "model": "summer_fun.activity",
+        "pk": 1,
+        "fields":{
+            "activity_name": "Stand Up Paddleboard",
+            "activity_description": "SUP in the bay"
+        }
+    },
+
+    {
+        "model": "summer_fun.activity",
+        "pk": 2,
+        "fields":{
+            "activity_name": "Snorkel",
+            "activity_description": "See colorful fish"
+        }
+    },
+    {
+        "model": "summer_fun.activity",
+        "pk": 3,
+        "fields":{
+            "activity_name": "Kayak",
+            "activity_description": "Kayak to the island"
+        }
+    }
+
+
+]

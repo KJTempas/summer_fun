@@ -52,14 +52,14 @@ def select_classes(request, student_pk):
     student =  get_object_or_404(Student, pk=student_pk)
     if request.method == 'POST':
         schedule_form = ScheduleForm(request.POST)
-        #sessions = 3 #made it a global var
+        num_of_sessions = 3 #make it a global var??
         activityData = request.POST.getlist('activity')
-        for instance in range(num_of_sessions-1):
+        for instance in range(1, num_of_sessions-1):
             activity = get_object_or_404(Activity, pk=activityData[instance])
         
             createObj = Schedule.objects.create(
                 student = student,
-                session = instance,
+                session = instance + 1,
                 activity = activity
             )
             createObj.save()
@@ -109,9 +109,7 @@ def run_report(request):
         form = ReportForm(request.POST)
         if form.is_valid():
             activity_term = form.cleaned_data['activity_name']
-            print('1',activity_term)
             act_id = Activity.objects.get(activity_name = activity_term)
-            print(act_id)
             session_num = form.cleaned_data['session_num']
             #may need name__iexact=to get case insensitive matches
             students = Schedule.objects.filter(activity=act_id,session= session_num)
