@@ -6,7 +6,6 @@ from summer_fun.models import Activity, Student
 # Create your tests here.
 #to run these tests, in summerfun, type python manage.py test
 
-#TODO run make migrations and migrate cause changed model
 
 class TestViewActivitiesPage(TestCase):
 
