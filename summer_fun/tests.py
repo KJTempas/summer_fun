@@ -6,6 +6,8 @@ from summer_fun.models import Activity, Student
 # Create your tests here.
 #to run these tests, in summerfun, type python manage.py test
 
+#TODO run make migrations and migrate cause changed model
+
 class TestViewActivitiesPage(TestCase):
 
     fixtures = ['test_activities'] #fixtures has 3 activites
@@ -14,7 +16,6 @@ class TestViewActivitiesPage(TestCase):
         response = self.client.get(reverse('activity_list'))
         self.assertTemplateUsed(response, 'summer_fun/activity_list.html')
         self.assertEquals(3, len(response.context['activities'])) 
-
 
 
 class TestAddActivities(TestCase):
@@ -74,3 +75,28 @@ class TestAddStudent(TestCase):
         student_count = Student.objects.count()
         #3 students in fixtures + one new student = 4
         self.assertEqual(4, student_count)
+    
+
+    def test_cannot_add_duplicate_student(self):
+        new_student = {
+            'first_name': 'Joan',
+            'last_name': 'Clarke',
+            'student_email': 'jclarke@gmail.com'
+        }
+        #trying to add a student who is already in the dbase (through fixtures)
+        #should not add due to unique together constraint
+        response = self.client.post(reverse('add_student'), data= new_student, follow=True)
+        student_count = Student.objects.count()
+        #3 students in fixtures is still total count
+        self.assertEqual(3, student_count)
+
+class TestViewStudentListPage(TestCase):
+
+    fixtures = ['test_students'] #fixtures has 3 students
+
+    def test_load_student_list_shows_three_students(self):
+        response = self.client.get(reverse('student_list'))
+        self.assertTemplateUsed(response, 'summer_fun/student_list.html')
+        self.assertEqual(3, len(response.context['student_classes'])) 
+   
+

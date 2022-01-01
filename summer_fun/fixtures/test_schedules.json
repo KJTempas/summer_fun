@@ -1,0 +1,29 @@
+[
+    {
+        "model": "summer_fun.schedule",
+        "pk": 1,
+        "fields":{
+            "student": 1,
+            "activity": 2,
+            "session": 1
+        }
+    },
+    {
+        "model": "summer_fun.schedule",
+        "pk": 2,
+        "fields":{
+            "student": 1,
+            "activity": 3,
+            "session": 2
+        }
+    },
+    {
+        "model": "summer_fun.schedule",
+        "pk": 3,
+        "fields":{
+            "student": 1,
+            "activity": 1,
+            "session": 3
+        }
+    }
+]
