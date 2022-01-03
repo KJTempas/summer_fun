@@ -41,42 +41,31 @@ def student_list(request):
     return render(request, 'summer_fun/student_list.html', { 'student_classes': student_classes})
        
 
-#TODO eventually
-# def student_details(request, student_pk):
-#     student = get_object_or_404(Student, pk=student_pk)
-#     print(student.first_name) #printing
-#     return render(request, 'summer_fun/student_details.html', {'student': student})
-    
-
-def select_classes(request, student_pk):
+def student_details(request, student_pk):
     student =  get_object_or_404(Student, pk=student_pk)
     if request.method == 'POST':
         schedule_form = ScheduleForm(request.POST)
-        num_of_sessions = 3 #make it a global var??
-        activityData = request.POST.getlist('activity')
-        for instance in range(1, num_of_sessions-1):
+        sessions = 3 #make it a global var??
+        activityData = request.POST.getlist('activity')    
+        for instance in range(0, sessions-1):       
             activity = get_object_or_404(Activity, pk=activityData[instance])
-        
+            #create and save a new Schedule object
             createObj = Schedule.objects.create(
                 student = student,
-                session = instance + 1,
+                session = instance+1,
                 activity = activity
-            )
+            ) 
             createObj.save()
         return redirect('student_list')
-
-    else: #GET
-        schedule_form = ScheduleForm() #instance = ?
-        return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,3)})
-            
-    schedule_form = ScheduleForm
-    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,3)})
-
-
-# def delete_student(request, student_pk):
-#     student = get_object_or_404(Student, pk=student_pk)
-#     student.delete()
-#     return redirect('student_list')
+    else: #a GET
+        #get info from dbase on this student's classes
+        student_classes = Schedule.objects.filter(student = student)
+        if student_classes: # if schedule already in dbase
+            return render(request, 'summer_fun/student_details.html', { 'student': student, 'student_classes': student_classes})# "sessions": range(1,3)})
+        else:  #display the blank form  
+            schedule_form = ScheduleForm
+            return render(request, 'summer_fun/student_details.html', { 'student': student, 'schedule_form': schedule_form, "sessions": range(1,3)})
+        
 
 def add_activity(request):
     if request.method == 'POST':
@@ -103,6 +92,45 @@ def activity_list(request):
         search_form = SearchForm()
         activities = Activity.objects.all()
     return render(request, 'summer_fun/activity_list.html', {'activities': activities, 'search_form':search_form })
+
+
+#TODO fix display and saving of classes
+def select_classes(request, student_pk):
+    student =  get_object_or_404(Student, pk=student_pk)
+    print('hello')
+    if request.method == 'POST':
+        print('you are here 1')
+        schedule_form = ScheduleForm(request.POST)
+        sessions = 3 #make it a global var??
+        activityData = request.POST.getlist('activity')    
+        for instance in range(0, sessions-1):       
+            activity = get_object_or_404(Activity, pk=activityData[instance])
+            print(activity.activity_name)
+            #create and save a new Schedule object
+            createObj = Schedule.objects.create(
+                student = student,
+                session = instance+1,
+                activity = activity
+            ) 
+            createObj.save()
+        return redirect('student_list')
+
+    else: #GET
+        print('you are here 2')
+        #should be multiple schedule objects for this student
+        #TODO work here to get current schedule to display
+        #get a queryset of schedule objects for this student
+        student_classes = Schedule.objects.filter(student = student) 
+        #schedule_form = ScheduleForm(instance=schedules) 
+        #send to new template; add Edit to this template
+        return render(request, 'summer_fun/student_details.html', { 'student': student, 'student_classes': student_classes})# "sessions": range(1,3)})
+     #display the blank form       
+    schedule_form = ScheduleForm
+    print('you are here 3')
+    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,3)})
+
+
+
 
 def run_report(request):
     if request.method =='POST':

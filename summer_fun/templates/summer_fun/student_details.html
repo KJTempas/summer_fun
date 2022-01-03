@@ -3,18 +3,45 @@
 {% block content %}
 
 
-<div class="studentlist-student">
+{{ student.first_name }}
+
+{% if student_classes %}
+    <table class="table">
+        <thead>
+            <tr>   
+                <th scope="col">Session One</th>
+                <th scope="col">Session Two</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for e in student_classes.all %}
+            <tr>
+                <td>{{ e.activity.activity_name }}</td>               
+            </tr>
+        
+        {% endfor %} 
+        
+        </tbody>
+    </table>
+{% else %}
+    <h3>Select classes here</h3>
     {{ student }}
-</div>
 
+    <!--student should be able to select an activity for each session-->
 
-<h3> click here to select classes</h3>
-<!--
-<form action="{% url 'delete_student' student.pk %}" method="POST">
+    <form method="POST" action="{% url 'student_details' student.pk %}" enctype="multipart/form-data">
     {% csrf_token %}
-    <button type='submit' class='delete'>Delete student</button>
-</form>
+    {% for session in sessions %}
+        {% for field in schedule_form %} 
+            {{ session }}
+            {{ field }}
+        {% endfor %}
+                <br>   
+    {% endfor %}
+    <button type="submit">Save Schedule</button>
+    </form>
 
-<script src="{% static 'js/confirm_delete.js' %}"></script>
--->
+{% endif %}
+
 {% endblock %}
