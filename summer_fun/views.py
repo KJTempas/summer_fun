@@ -36,8 +36,7 @@ def student_list(request):
             activity = x.activity.activity_name #extract the activity name
             this_students_classes.append(activity) #add to listfor this student
         #dictionary[key]=value
-        student_classes[student]=this_students_classes
-        
+        student_classes[student]=this_students_classes  
     return render(request, 'summer_fun/student_list.html', { 'student_classes': student_classes})
        
 
@@ -65,6 +64,10 @@ def student_details(request, student_pk):
         else:  #display the blank form  
             schedule_form = ScheduleForm
             return render(request, 'summer_fun/student_details.html', { 'student': student, 'schedule_form': schedule_form, "sessions": range(1,3)})
+
+
+def edit_schedule(request, student_pk):
+     pass   
         
 
 def add_activity(request):
@@ -94,44 +97,6 @@ def activity_list(request):
     return render(request, 'summer_fun/activity_list.html', {'activities': activities, 'search_form':search_form })
 
 
-#TODO fix display and saving of classes
-def select_classes(request, student_pk):
-    student =  get_object_or_404(Student, pk=student_pk)
-    print('hello')
-    if request.method == 'POST':
-        print('you are here 1')
-        schedule_form = ScheduleForm(request.POST)
-        sessions = 3 #make it a global var??
-        activityData = request.POST.getlist('activity')    
-        for instance in range(0, sessions-1):       
-            activity = get_object_or_404(Activity, pk=activityData[instance])
-            print(activity.activity_name)
-            #create and save a new Schedule object
-            createObj = Schedule.objects.create(
-                student = student,
-                session = instance+1,
-                activity = activity
-            ) 
-            createObj.save()
-        return redirect('student_list')
-
-    else: #GET
-        print('you are here 2')
-        #should be multiple schedule objects for this student
-        #TODO work here to get current schedule to display
-        #get a queryset of schedule objects for this student
-        student_classes = Schedule.objects.filter(student = student) 
-        #schedule_form = ScheduleForm(instance=schedules) 
-        #send to new template; add Edit to this template
-        return render(request, 'summer_fun/student_details.html', { 'student': student, 'student_classes': student_classes})# "sessions": range(1,3)})
-     #display the blank form       
-    schedule_form = ScheduleForm
-    print('you are here 3')
-    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,3)})
-
-
-
-
 def run_report(request):
     if request.method =='POST':
         form = ReportForm(request.POST)
@@ -146,3 +111,6 @@ def run_report(request):
     else: #GET - just show the form
         form = ReportForm()
     return render(request, 'summer_fun/run_report.html', {'form': form})
+
+
+#TODO delete select_classes.html template

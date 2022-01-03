@@ -3,33 +3,31 @@
 {% block content %}
 
 
-{{ student.first_name }}
+<h4> Schedule for {{ student }} </h4>
 
 {% if student_classes %}
     <table class="table">
         <thead>
             <tr>   
-                <th scope="col">Session One</th>
-                <th scope="col">Session Two</th>
+                <th scope="col">Session Number</th>
+                <th scope="col">Activity Name</th>
             </tr>
         </thead>
         <tbody>
         
         {% for e in student_classes.all %}
             <tr>
-                <td>{{ e.activity.activity_name }}</td>               
+                <td >{{ e.session }}</td>  
+                <td >{{ e.activity.activity_name }}</td>               
             </tr>
-        
-        {% endfor %} 
-        
+        {% endfor %}  
         </tbody>
     </table>
 {% else %}
     <h3>Select classes here</h3>
     {{ student }}
 
-    <!--student should be able to select an activity for each session-->
-
+    <!--student can select an activity for each session-->
     <form method="POST" action="{% url 'student_details' student.pk %}" enctype="multipart/form-data">
     {% csrf_token %}
     {% for session in sessions %}
@@ -43,5 +41,13 @@
     </form>
 
 {% endif %}
+
+<form action="{% url 'edit_schedule' student.pk  %}" method="GET" >
+    <div>
+    {% csrf_token %} <!--cross site request forgery token-->
+    {{ form.as_p }}<!--line between each item on form-->
+    </div>
+   <button type='submit' class='edit'> Edit Schedule</button>
+</form>
 
 {% endblock %}
