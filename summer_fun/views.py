@@ -56,19 +56,31 @@ def student_details(request, student_pk):
             ) 
             createObj.save()
         return redirect('student_list')
-    else: #a GET
+    else:
         #get info from dbase on this student's classes
         student_classes = Schedule.objects.filter(student = student)
         if student_classes: # if schedule already in dbase
-            return render(request, 'summer_fun/student_details.html', { 'student': student, 'student_classes': student_classes})# "sessions": range(1,3)})
+            return render(request, 'summer_fun/student_details.html', { 'student': student, 'student_classes': student_classes})
         else:  #display the blank form  
             schedule_form = ScheduleForm
             return render(request, 'summer_fun/student_details.html', { 'student': student, 'schedule_form': schedule_form, "sessions": range(1,3)})
 
 
 def edit_schedule(request, student_pk):
-     pass   
-        
+    student =  get_object_or_404(Student, pk=student_pk) 
+    student_classes = Schedule.objects.filter(student = student) #a query set of schedule objects
+    if request.method == 'GET':
+        schedule_form = ScheduleForm
+        return render(request, 'summer_fun/edit_schedule.html', {'student': student,'schedule_form': schedule_form, 'student_classes': student_classes, "sessions": range(1,3)}) 
+    else: #request is POST
+        schedule_form = ScheduleForm(request.POST)
+        if schedule_form.is_valid():
+            print('do something here')
+            #messages.info(request, 'Edit saved')
+            return redirect('student_list')
+
+
+#TODO make sure can't more activities than number of sessions
 
 def add_activity(request):
     if request.method == 'POST':
