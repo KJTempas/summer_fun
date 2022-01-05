@@ -17,7 +17,6 @@ def add_student(request):
         if new_student_form.is_valid():
             new_student_form.save()
             return redirect('student_list')
-        #return render(request, 'summer_fun/select_classes.html', {'select_form': select_form})
         else:
             #messages.warning(request, 'Check the data entered')
             return render(request, 'summer_fun/add_student.html', {'new_student_form': new_student_form })
@@ -133,5 +132,3 @@ def run_report(request):
         form = ReportForm()
     return render(request, 'summer_fun/run_report.html', {'form': form})
 
-
-#TODO delete select_classes.html template
