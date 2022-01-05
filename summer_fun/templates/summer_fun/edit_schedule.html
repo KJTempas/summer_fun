@@ -10,6 +10,7 @@
     {% endfor %}
     <br>
     <h6>Select new classes below</h6>
+    
 <form method="POST" action="{% url 'edit_schedule' student.pk  %}" enctype="multipart/form-data">
     {% csrf_token %} 
     {% for session in sessions %}

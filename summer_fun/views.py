@@ -75,7 +75,16 @@ def edit_schedule(request, student_pk):
     else: #request is POST
         schedule_form = ScheduleForm(request.POST)
         if schedule_form.is_valid():
-            print('do something here')
+            activityData = request.POST.getlist('activity') 
+            #retrieve schedule objects for this student
+            student_classes = Schedule.objects.filter(student = student)
+            #modify them with new activity choices
+            i=0
+            for s in student_classes:
+                activity = get_object_or_404(Activity, pk=activityData[i])
+                s.activity = activity #update this schedfule's activity
+                s.save() #save the new schedule object
+                i=+1
             #messages.info(request, 'Edit saved')
             return redirect('student_list')
 
