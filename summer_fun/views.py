@@ -43,7 +43,7 @@ def student_details(request, student_pk):
     student =  get_object_or_404(Student, pk=student_pk)
     if request.method == 'POST':
         schedule_form = ScheduleForm(request.POST)
-        sessions = 3 #make it a global var??
+        sessions = 4 #make it a global var??
         activityData = request.POST.getlist('activity')    
         for instance in range(0, sessions-1):       
             activity = get_object_or_404(Activity, pk=activityData[instance])
@@ -62,7 +62,7 @@ def student_details(request, student_pk):
             return render(request, 'summer_fun/student_details.html', { 'student': student, 'student_classes': student_classes})
         else:  #display the blank form  
             schedule_form = ScheduleForm
-            return render(request, 'summer_fun/student_details.html', { 'student': student, 'schedule_form': schedule_form, "sessions": range(1,3)})
+            return render(request, 'summer_fun/student_details.html', { 'student': student, 'schedule_form': schedule_form, "sessions": range(1,4)})
 
 
 def edit_schedule(request, student_pk):
@@ -70,7 +70,7 @@ def edit_schedule(request, student_pk):
     student_classes = Schedule.objects.filter(student = student) #a query set of schedule objects
     if request.method == 'GET':
         schedule_form = ScheduleForm
-        return render(request, 'summer_fun/edit_schedule.html', {'student': student,'schedule_form': schedule_form, 'student_classes': student_classes, "sessions": range(1,3)}) 
+        return render(request, 'summer_fun/edit_schedule.html', {'student': student,'schedule_form': schedule_form, 'student_classes': student_classes, "sessions": range(1,4)}) 
     else: #request is POST
         schedule_form = ScheduleForm(request.POST)
         if schedule_form.is_valid():
@@ -83,7 +83,7 @@ def edit_schedule(request, student_pk):
                 activity = get_object_or_404(Activity, pk=activityData[i])
                 s.activity = activity #update this schedfule's activity
                 s.save() #save the new schedule object
-                i=+1
+                i+=1
             #messages.info(request, 'Edit saved')
             return redirect('student_list')
 

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from summer_fun.models import Activity, Student
+from summer_fun.models import Activity, Student, Schedule
 
 # Create your tests here.
 #to run these tests, in summerfun, type python manage.py test
@@ -50,9 +50,7 @@ class TestAddActivities(TestCase):
         self.assertEqual(3, activites_count)
         
 
-
 class TestAddStudent(TestCase):
-
     fixtures = ['test_students']
 
     def test_add_student(self):
@@ -89,8 +87,8 @@ class TestAddStudent(TestCase):
         #3 students in fixtures is still total count
         self.assertEqual(3, student_count)
 
-class TestViewStudentListPage(TestCase):
 
+class TestViewStudentListPage(TestCase):
     fixtures = ['test_students'] #fixtures has 3 students
 
     def test_load_student_list_shows_three_students(self):
@@ -99,3 +97,18 @@ class TestViewStudentListPage(TestCase):
         self.assertEqual(3, len(response.context['student_classes'])) 
    
 
+class TestAddStudentSchedule(TestCase):
+    fixtures = ['test_schedules', 'test_students', 'test_activities']
+
+    # def test_add_student_schedule_database_updated_correctly(self):
+    #     initial_schedule_object_count = Schedule.objects.count()
+    #     new_schedule_url = reverse('student_details' , kwargs={'student_pk': '2'})
+    #     response = self.client.post(new_schedule_url, 
+    #         { 'activity': '1', 'session': '1'},  
+    #         { 'activity': '2', 'session': '2'},
+    #         { 'activity': '3', 'session': '3'})
+    #     #verify that 3 more schedule objects are in dbase
+    #     self.assertEqual(Schedule.objects.count(), initial_schedule_object_count + 3)
+
+        #verify schedule objects are in dbase
+        
