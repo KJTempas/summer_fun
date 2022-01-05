@@ -3,18 +3,79 @@
 {% block content %}
 
 
-<div class="studentlist-student">
+<h4> Schedule for {{ student }} </h4>
+
+{% if student_classes %}
+    <table class="table">
+        <thead>
+            <tr>   
+                <th scope="col">Session Number</th>
+                <th scope="col">Activity Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for e in student_classes.all %}
+            <tr>
+                <td >{{ e.session }}</td>  
+                <td >{{ e.activity.activity_name }}</td>               
+            </tr>
+        {% endfor %}  
+        </tbody>
+    </table>
+
+    <span id="student-name{{ student.pk }}">
+        Click <a href="{% url 'edit_schedule' student_pk=student.pk %}">here </a> to edit schedule
+    </span> 
+    <!-- <form method="GET" action="{% url 'edit_schedule' student.pk  %}" enctype="multipart/form-data">
+        {% csrf_token %} 
+        {% for session in sessions %}
+            {% for field in schedule_form %} 
+                {{ session }}
+                {{ field }}
+        {% endfor %}
+                <br>   
+    {% endfor %} 
+       {{ schedule_form }}  -->
+     <!--<button type='submit' class='edit'> Edit Schedule</button>
+    </form>  -->
+
+
+{% else %} <!-- student has no schedule objects-->
+    <h3>Select classes here</h3>
     {{ student }}
-</div>
 
-
-<h3> click here to select classes</h3>
-<!--
-<form action="{% url 'delete_student' student.pk %}" method="POST">
+    <!--student can select an activity for each session-->
+    <form method="POST" action="{% url 'student_details' student.pk %}" enctype="multipart/form-data">
     {% csrf_token %}
-    <button type='submit' class='delete'>Delete student</button>
-</form>
+    {% for session in sessions %}
+        {% for field in schedule_form %} 
+            {{ session }}
+            {{ field }}
+        {% endfor %}
+                <br>   
+    {% endfor %}
+    <button type="submit">Save Schedule</button>
+    </form>
 
-<script src="{% static 'js/confirm_delete.js' %}"></script>
--->
+{% endif %}
+<!--this shows up as second  empty form-->
+<!--
+<form method='GET' action="{% url 'edit_schedule' student.pk  %}" >
+    <div>
+    {% csrf_token %} 
+    {% for session in sessions %}
+    {% for field in schedule_form %} 
+        {{ session }}
+        {{ field }}
+    {% endfor %}
+            <br>   
+{% endfor %}  
+  
+    </div>
+  <button type='submit' class='edit'> Edit Schedule</button>
+</form>   -->
+
+
+
 {% endblock %}
