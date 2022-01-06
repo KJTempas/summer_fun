@@ -98,4 +98,25 @@ class TestViewStudentListPage(TestCase):
         self.assertTemplateUsed(response, 'summer_fun/student_list.html')
         self.assertEqual(3, len(response.context['student_classes'])) 
    
+class TestSearchActivity(TestCase):
+    fixtures = ['test_activities']
 
+    def test_activity_search_matches_case_insensitive_and_partial(self):
+        #search activities that include the letter s
+        response = self.client.get(reverse('activity_list') + '?search_term=s')
+        self.assertContains(response, 'Snorkel')
+        self.assertContains(response, 'SUP')
+        self.assertNotContains(response, 'Kayak')
+
+    def test_activity_search_no_search_results(self):
+        response = self.client.get(reverse('activity_list') + '?search_term=badminton')
+        #check length of activity_list; should be 0 because no matches
+        self.assertEqual(len(response.context['activities']), 0)
+
+
+    def test_activity_search_clear_link(self):
+        response = self.client.get( reverse('activity_list') + '?search_term=s')
+        #when the clear button is clicked, it redirects to the activity list page
+        all_activities_url = reverse('activity_list')
+        self.assertContains(response, all_activities_url)
+        
