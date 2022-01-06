@@ -120,3 +120,23 @@ class TestSearchActivity(TestCase):
         all_activities_url = reverse('activity_list')
         self.assertContains(response, all_activities_url)
         
+
+class TestSearchStudent(TestCase):
+    fixtures = ['test_students']
+
+    def test_student_search_matches_case_insensitive_and_partial(self):
+        #search activities that include the letters jo (fixtures has a Joan)
+        response = self.client.get(reverse('student_list') + '?search_term=jo')
+        self.assertContains(response, 'Joan')
+        self.assertNotContains(response, 'Acadia')
+
+    def test_student_search_no_search_results(self):
+        response = self.client.get(reverse('student_list') + '?search_term=mickey')
+        self.assertContains(response, 'No students')
+
+    def test_student_search_clear_link(self):
+        response = self.client.get( reverse('student_list') + '?search_term=jo')
+        #when the clear button is clicked, it redirects to the student list page
+        all_students_url = reverse('student_list')
+        self.assertContains(response, all_students_url)
+        
