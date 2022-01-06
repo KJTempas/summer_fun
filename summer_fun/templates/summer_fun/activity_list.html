@@ -19,7 +19,7 @@
 
 
 
-    <h4>List of activities you can select from</h4>
+    <h4>List of activities </h4>
 <table class="table">
     <thead>
         <tr>
@@ -38,11 +38,11 @@
                     
                 </tr>
             </div> 
-            {% empty %}
-            <p> No activities match search term</p>
+        {% empty %}
+            <p> No activities in system</p>
             {% endfor %}
         {% else %}
-        <p>No activies available yet</p>
+        <p>No activities match search criteria</p>
            {% endif %}
     </tbody>
 </table>
