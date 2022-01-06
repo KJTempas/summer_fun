@@ -25,7 +25,19 @@ def add_student(request):
 
 
 def student_list(request):
-    students = Student.objects.order_by(Lower('first_name'))
+    search_form = SearchForm(request.GET)
+    if search_form.is_valid():
+        search_term = search_form.cleaned_data['search_term']
+        students = Student.objects.filter(first_name__icontains=search_term).order_by(Lower('first_name'))
+        student_classes=get_student_classes(students) #call method below
+    else: #show all students listin alpha order and the search form
+        search_form = SearchForm()
+        students = Student.objects.order_by(Lower('first_name'))
+        student_classes = get_student_classes(students) 
+    return render(request, 'summer_fun/student_list.html', { 'student_classes': student_classes, 'search_form': search_form})
+
+
+def get_student_classes(students):
     student_classes ={}
     for student in students:
         this_students_classes =[]
@@ -36,8 +48,9 @@ def student_list(request):
             this_students_classes.append(activity) #add to listfor this student
         #dictionary[key]=value
         student_classes[student]=this_students_classes  
-    return render(request, 'summer_fun/student_list.html', { 'student_classes': student_classes})
-       
+    return student_classes
+    
+        
 
 def student_details(request, student_pk):
     student =  get_object_or_404(Student, pk=student_pk)
