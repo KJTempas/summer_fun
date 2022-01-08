@@ -28,7 +28,7 @@ class Student(models.Model):
 
 class Schedule(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    activity = models.ForeignKey(Activity, on_delete=models.CASCADE) #PROTECT?
+    activity = models.ForeignKey(Activity, on_delete=models. PROTECT)
     session =  models.CharField(max_length=1)
     #add later
     #date_entered = models.DateField()
