@@ -26,10 +26,12 @@ class ScheduleForm(forms.ModelForm):
     #could use exclude
 
 
-#TODO session number dropdown
+#TODO  session number dropdown
 class ReportForm(forms.Form):
     session_num = forms.IntegerField(label='session number')
- 
+    # choice_list = ['1','2','3']
+    # session_num = forms.ChoiceField(label='session number', choices=choice_list)
+    
     activity_list =[]
     for activity in Activity.objects.all():
         if activity.activity_name not in activity_list:
