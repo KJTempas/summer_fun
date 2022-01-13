@@ -25,5 +25,14 @@
             "activity": 1,
             "session": 3
         }
+    },
+    {
+        "model": "summer_fun.schedule",
+        "pk": 4,
+        "fields":{
+            "student": 2,
+            "activity": 2,
+            "session": 1
+        }
     }
 ]

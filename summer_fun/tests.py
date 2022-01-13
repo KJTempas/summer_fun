@@ -1,5 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.test import RequestFactory
+
 
 from summer_fun.models import Activity, Student
 
@@ -108,6 +110,7 @@ class TestSearchActivity(TestCase):
         self.assertContains(response, 'SUP')
         self.assertNotContains(response, 'Kayak')
 
+
     def test_activity_search_no_search_results(self):
         response = self.client.get(reverse('activity_list') + '?search_term=badminton')
         #check length of activity_list; should be 0 because no matches
@@ -140,3 +143,27 @@ class TestSearchStudent(TestCase):
         all_students_url = reverse('student_list')
         self.assertContains(response, all_students_url)
         
+
+class TestRunReport(TestCase):
+    fixtures = ['test_students', 'test_activities', 'test_schedules' ]
+
+    def test_run_report_shows_results(self):
+        #report for students in session 1 and activity 2; should show 2 student; #1 and 2 
+        response = self.client.post(reverse('run_report') , { 'activity': 2, 'session': 1})    
+        # check redirect
+        self.assertTemplateUsed('summer_fun/student_list.html')
+        #TODO fix this test
+        self.assertEqual(response.context['students'].count(), 2)
+        #self.assertContains(response, 'Margaret') #student w/ pk2 is included
+                #check results-#students with id2 and 1 are in the report; but not id3
+
+        #self.assertEqual(2, len(response.context['students'])) #key error
+        # students = list(response.context['students'].all())
+        # self.assertEqual(2, len(students)) #key error: 'students'
+        #self.assertEqual(2, response.context['students'].count())
+      #  self.assertContains(response,'Margaret Hamilton')
+
+    
+    # def test_run_report_no_results(self):
+    #     response = self.client.post(reverse('run_report') , { 'activity': 3, 'session': 1}) 
+    #     self.assertContains(response, 'No students')

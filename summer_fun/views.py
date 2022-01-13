@@ -75,7 +75,7 @@ def student_details(request, student_pk):
             return render(request, 'summer_fun/student_details.html', { 'student': student, 'student_classes': student_classes})
         else:  #display the blank form  
             schedule_form = ScheduleForm
-            return render(request, 'summer_fun/student_details.html', { 'student': student, 'schedule_form': schedule_form, "sessions": range(1,3)})
+            return render(request, 'summer_fun/student_details.html', { 'student': student, 'schedule_form': schedule_form, "sessions": range(1,4)})
 
 
 def edit_schedule(request, student_pk):
@@ -83,7 +83,7 @@ def edit_schedule(request, student_pk):
     student_classes = Schedule.objects.filter(student = student) #a query set of schedule objects
     if request.method == 'GET':
         schedule_form = ScheduleForm
-        return render(request, 'summer_fun/edit_schedule.html', {'student': student,'schedule_form': schedule_form, 'student_classes': student_classes, "sessions": range(1,3)}) 
+        return render(request, 'summer_fun/edit_schedule.html', {'student': student,'schedule_form': schedule_form, 'student_classes': student_classes, "sessions": range(1,4)}) 
     else: #request is POST
         schedule_form = ScheduleForm(request.POST)
         if schedule_form.is_valid():
@@ -139,6 +139,7 @@ def run_report(request):
             session_num = form.cleaned_data['session_num']
             #may need name__iexact=to get case insensitive matches
             students = Schedule.objects.filter(activity=act_id,session= session_num)
+          
     #TODO fix session numbersfrom 0 and 1 to 1 and 2
             return render(request, 'summer_fun/report_results.html', {'students': students, 'activity': activity_term , 'session': session_num})
     else: #GET - just show the form

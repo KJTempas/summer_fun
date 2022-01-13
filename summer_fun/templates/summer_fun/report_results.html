@@ -10,6 +10,8 @@
 
     {{ student.student }} <br>
 
+{% empty %}
+    <p5>No students have signed up for {{ activity }} in session {{ session }}</p5>
 {% endfor %}
 
 {% endblock %}  
