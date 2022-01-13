@@ -28,9 +28,8 @@ class ScheduleForm(forms.ModelForm):
 
 #TODO  session number dropdown
 class ReportForm(forms.Form):
-    session_num = forms.IntegerField(label='session number')
-    # choice_list = ['1','2','3']
-    # session_num = forms.ChoiceField(label='session number', choices=choice_list)
+    session_list =[('1','1'),('2','2'),('3','3')]
+    session_num = forms.ChoiceField(label='session number', choices=session_list)
     
     activity_list =[]
     for activity in Activity.objects.all():
