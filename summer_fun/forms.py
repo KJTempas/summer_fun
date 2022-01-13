@@ -25,10 +25,12 @@ class ScheduleForm(forms.ModelForm):
         fields = [ 'activity']
     
 
+
 class ReportForm(forms.Form):
   #TODO make number of sessions a global variable
     session_list =[('1','1'),('2','2'),('3','3')]
     session_num = forms.ChoiceField(label='session number', choices=session_list)
+
 
     activity_list =[]
     for activity in Activity.objects.all():

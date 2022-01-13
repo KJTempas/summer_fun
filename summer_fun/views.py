@@ -17,7 +17,6 @@ def add_student(request):
         if new_student_form.is_valid():
             new_student_form.save()
             return redirect('student_list')
-        #return render(request, 'summer_fun/select_classes.html', {'select_form': select_form})
         else:
             #messages.warning(request, 'Check the data entered')
             return render(request, 'summer_fun/add_student.html', {'new_student_form': new_student_form })
@@ -26,7 +25,19 @@ def add_student(request):
 
 
 def student_list(request):
-    students = Student.objects.order_by(Lower('first_name'))
+    search_form = SearchForm(request.GET)
+    if search_form.is_valid():
+        search_term = search_form.cleaned_data['search_term']
+        students = Student.objects.filter(first_name__icontains=search_term).order_by(Lower('first_name'))
+        student_classes=get_student_classes(students) #call method below
+    else: #show all students listin alpha order and the search form
+        search_form = SearchForm()
+        students = Student.objects.order_by(Lower('first_name'))
+        student_classes = get_student_classes(students) 
+    return render(request, 'summer_fun/student_list.html', { 'student_classes': student_classes, 'search_form': search_form})
+
+
+def get_student_classes(students):
     student_classes ={}
     for student in students:
         this_students_classes =[]
@@ -36,47 +47,61 @@ def student_list(request):
             activity = x.activity.activity_name #extract the activity name
             this_students_classes.append(activity) #add to listfor this student
         #dictionary[key]=value
-        student_classes[student]=this_students_classes
-        
-    return render(request, 'summer_fun/student_list.html', { 'student_classes': student_classes})
-       
-
-#TODO eventually
-# def student_details(request, student_pk):
-#     student = get_object_or_404(Student, pk=student_pk)
-#     print(student.first_name) #printing
-#     return render(request, 'summer_fun/student_details.html', {'student': student})
+        student_classes[student]=this_students_classes  
+    return student_classes
     
+        
 
-def select_classes(request, student_pk):
+def student_details(request, student_pk):
     student =  get_object_or_404(Student, pk=student_pk)
     if request.method == 'POST':
         schedule_form = ScheduleForm(request.POST)
-        #sessions = 3 #made it a global var
-        activityData = request.POST.getlist('activity')
-        for instance in range(num_of_sessions-1):
+        sessions = 3 #make it a global var??
+        activityData = request.POST.getlist('activity')    
+        for instance in range(0, sessions-1):       
             activity = get_object_or_404(Activity, pk=activityData[instance])
-        
+            #create and save a new Schedule object
             createObj = Schedule.objects.create(
                 student = student,
-                session = instance,
+                session = instance+1,
                 activity = activity
-            )
+            ) 
             createObj.save()
         return redirect('student_list')
+    else:
+        #get info from dbase on this student's classes
+        student_classes = Schedule.objects.filter(student = student)
+        if student_classes: # if schedule already in dbase
+            return render(request, 'summer_fun/student_details.html', { 'student': student, 'student_classes': student_classes})
+        else:  #display the blank form  
+            schedule_form = ScheduleForm
+            return render(request, 'summer_fun/student_details.html', { 'student': student, 'schedule_form': schedule_form, "sessions": range(1,3)})
 
-    else: #GET
-        schedule_form = ScheduleForm() #instance = ?
-        return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,3)})
-            
-    schedule_form = ScheduleForm
-    return render(request, 'summer_fun/select_classes.html', {'schedule_form': schedule_form, 'student': student, "sessions": range(1,3)})
+
+def edit_schedule(request, student_pk):
+    student =  get_object_or_404(Student, pk=student_pk) 
+    student_classes = Schedule.objects.filter(student = student) #a query set of schedule objects
+    if request.method == 'GET':
+        schedule_form = ScheduleForm
+        return render(request, 'summer_fun/edit_schedule.html', {'student': student,'schedule_form': schedule_form, 'student_classes': student_classes, "sessions": range(1,3)}) 
+    else: #request is POST
+        schedule_form = ScheduleForm(request.POST)
+        if schedule_form.is_valid():
+            activityData = request.POST.getlist('activity') 
+            #retrieve schedule objects for this student
+            student_classes = Schedule.objects.filter(student = student)
+            #modify them with new activity choices
+            i=0
+            for s in student_classes:
+                activity = get_object_or_404(Activity, pk=activityData[i])
+                s.activity = activity #update this schedfule's activity
+                s.save() #save the new schedule object
+                i=+1
+            #messages.info(request, 'Edit saved')
+            return redirect('student_list')
 
 
-# def delete_student(request, student_pk):
-#     student = get_object_or_404(Student, pk=student_pk)
-#     student.delete()
-#     return redirect('student_list')
+#TODO make sure can't more activities than number of sessions
 
 def add_activity(request):
     if request.method == 'POST':
@@ -104,14 +129,13 @@ def activity_list(request):
         activities = Activity.objects.all()
     return render(request, 'summer_fun/activity_list.html', {'activities': activities, 'search_form':search_form })
 
+
 def run_report(request):
     if request.method =='POST':
         form = ReportForm(request.POST)
         if form.is_valid():
             activity_term = form.cleaned_data['activity_name']
-            print('1',activity_term)
             act_id = Activity.objects.get(activity_name = activity_term)
-            print(act_id)
             session_num = form.cleaned_data['session_num']
             #may need name__iexact=to get case insensitive matches
             students = Schedule.objects.filter(activity=act_id,session= session_num)
@@ -120,3 +144,4 @@ def run_report(request):
     else: #GET - just show the form
         form = ReportForm()
     return render(request, 'summer_fun/run_report.html', {'form': form})
+

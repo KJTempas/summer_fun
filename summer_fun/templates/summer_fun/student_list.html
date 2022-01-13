@@ -3,8 +3,8 @@
 {% block content %}
 <h2>Welcome to Summer Fun</h2>
 
-<!--  Search -->
-<!--<h4>Search</h4>
+ 
+<h4>Search by first name</h4>
 <form method="GET" action="{% url 'student_list' %}">
     {{ search_form  }}
     <button type="submit">Search for Student</button>
@@ -14,13 +14,14 @@
     </a>
     <br>
     <br>
-    <a href="{% url 'add_student' %}">Add New Student</a> -->
+    <a href="{% url 'add_student' %}">Add New Student</a> 
     
-    <!-- pluralize helps with student vs studentss depending on length-->
-<!--<h3>{{ student.first_name }} {{ student.last_name}}</h3>  -->
+<h3>{{ student.first_name }} {{ student.last_name}}</h3> 
 
 
 <h4>List of registered students and activities</h4>
+<h5>Click on student's first name to select or edit classes</h5>
+
 {% if student_classes %}
 <table class="table">
     <thead>
@@ -29,6 +30,7 @@
             <th scope="col">Last Name</th>
             <th scope="col">Session One</th>
             <th scope="col">Session Two</th>
+            <th scope="col">Session Three</th>
         </tr>
     </thead>
     <tbody>
@@ -37,16 +39,19 @@
     
         <tr>
             <span id="student-name{{ student.pk }}">
-                <td><a href="{% url 'select_classes' student_pk=key.pk %}">{{ key.first_name }}</a>
+                <td><a href="{% url 'student_details' student_pk=key.pk %}">{{ key.first_name }}</a>
             </td></span> 
             <td>{{ key.last_name }}</td>
 
             {% for i in value %}
                 <td>{{ i }}</td>
+                
             {% empty %} <!--if value is an empty list []-->
             <td> The student has not selected any classes </td>
             {% endfor %}
-                        
+            
+                
+                   
         </tr>
      
     {% endfor %} <!-- end the for key,value....-->
