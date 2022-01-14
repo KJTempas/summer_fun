@@ -2,9 +2,6 @@ from django import forms
 from django.forms import ModelForm
 from .models import Student, Activity, Schedule
 
-#http://www.learningaboutelectronics.com/Articles/How-to-create-a-drop-down-list-in-a-Django-form.php
-#https://www.geeksforgeeks.org/how-to-use-django-field-choices/
-
 
 class NewStudentForm(ModelForm):
     class Meta:
@@ -29,10 +26,15 @@ class ScheduleForm(forms.ModelForm):
 #TODO  session number dropdown
 class ReportForm(forms.Form):
     session_list =[('1','1'),('2','2'),('3','3')]
-    session_num = forms.ChoiceField(label='session number', choices=session_list)
+    session_num = forms.ChoiceField(label='Select session number', choices=session_list)
     
     activity_list =[]
     for activity in Activity.objects.all():
         if activity.activity_name not in activity_list:
             activity_list.append((activity.activity_name, activity.activity_name))
     activity_name = forms.ChoiceField(label="Select an activity", choices=activity_list)
+
+
+
+#http://www.learningaboutelectronics.com/Articles/How-to-create-a-drop-down-list-in-a-Django-form.php
+#https://www.geeksforgeeks.org/how-to-use-django-field-choices/
