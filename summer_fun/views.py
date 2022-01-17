@@ -57,8 +57,9 @@ def student_details(request, student_pk):
     if request.method == 'POST':
         schedule_form = ScheduleForm(request.POST)
         sessions = 3 #make it a global var??
-        activityData = request.POST.getlist('activity')    
-        for instance in range(0, sessions-1):       
+        activityData = request.POST.getlist('activity')  #this list is indexed 0,1,2  
+      #  for instance in range(0, sessions-1):     
+        for instance in range(0, sessions):    
             activity = get_object_or_404(Activity, pk=activityData[instance])
             #create and save a new Schedule object
             createObj = Schedule.objects.create(

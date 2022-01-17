@@ -4,7 +4,7 @@
 <h2>Welcome to Summer Fun</h2>
 
  
-<h4>Search by first name</h4>
+<h3>Search by first name</h3>
 <form method="GET" action="{% url 'student_list' %}">
     {{ search_form  }}
     <button type="submit">Search for Student</button>
@@ -19,8 +19,8 @@
 <h3>{{ student.first_name }} {{ student.last_name}}</h3> 
 
 
-<h4>List of registered students and activities</h4>
-<h5>Click on student's first name to select or edit classes</h5>
+<h2>List of registered students and activities</h2>
+<h3>Click on student's first name to select or edit classes</h3>
 
 {% if student_classes %}
 <table class="table">
