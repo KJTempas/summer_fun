@@ -27,8 +27,11 @@ class Student(models.Model):
    
 
 class Schedule(models.Model):
+    #on_delete 
+    #Cascade -means also deletes the object containing the Foreign key (so will delete any Schedule objects that include this activity)
+    #protect - prevents deletion of the referenced object (prevents deletion of schedules that use this activity)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    activity = models.ForeignKey(Activity, on_delete=models. PROTECT)
+    activity = models.ForeignKey(Activity, on_delete=models.PROTECT)
     session =  models.CharField(max_length=1)
     #add later
     #date_entered = models.DateField()

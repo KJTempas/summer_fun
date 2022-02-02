@@ -78,6 +78,13 @@ def student_details(request, student_pk):
             schedule_form = ScheduleForm
             return render(request, 'summer_fun/student_details.html', { 'student': student, 'schedule_form': schedule_form, "sessions": range(1,4)})
 
+def activity_details(request, activity_pk):
+    activity =  get_object_or_404(Activity, pk=activity_pk)
+    return render(request, 'summer_fun/activity_details.html', {'activity': activity})
+
+
+
+
 
 def edit_schedule(request, student_pk):
     student =  get_object_or_404(Student, pk=student_pk) 
@@ -127,6 +134,11 @@ def activity_list(request):
         search_form = SearchForm()
         activities = Activity.objects.all()
     return render(request, 'summer_fun/activity_list.html', {'activities': activities, 'search_form':search_form })
+
+def delete_activity(request, activity_pk):
+    activity = get_object_or_404(Activity, pk=activity_pk)
+    activity.delete()
+    return redirect('activity_list')
 
 
 def run_report(request):

@@ -1,0 +1,39 @@
+{% extends 'summer_fun/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<table class="table">
+    <thead>
+        <tr>   
+            <th scope="col">Activity Name</th>
+            <th scope="col">Activity Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td >{{ activity.activity_name}}</td>  
+            <td >{{ activity.activity_description }}</td>               
+        </tr>
+        </tbody>
+    </table>
+
+<!--add delete button here-->
+<form action="{% url 'delete_activity' activity.pk %}" method="POST">
+    {% csrf_token %}
+    <button type='submit' class='delete'>Delete activity</button>
+</form>
+
+
+<script src="{% static 'js/confirm_delete.js' %}"></script>
+
+
+
+
+
+
+
+
+
+{% endblock %}

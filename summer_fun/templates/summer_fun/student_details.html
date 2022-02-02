@@ -27,18 +27,6 @@
     <span id="student-name{{ student.pk }}">
         Click <a href="{% url 'edit_schedule' student_pk=student.pk %}">here </a> to edit schedule
     </span> 
-    <!-- <form method="GET" action="{% url 'edit_schedule' student.pk  %}" enctype="multipart/form-data">
-        {% csrf_token %} 
-        {% for session in sessions %}
-            {% for field in schedule_form %} 
-                {{ session }}
-                {{ field }}
-        {% endfor %}
-                <br>   
-    {% endfor %} 
-       {{ schedule_form }}  -->
-     <!--<button type='submit' class='edit'> Edit Schedule</button>
-    </form>  -->
 
 
 {% else %} <!-- student has no schedule objects-->
@@ -59,22 +47,6 @@
     </form>
 
 {% endif %}
-<!--this shows up as second  empty form-->
-<!--
-<form method='GET' action="{% url 'edit_schedule' student.pk  %}" >
-    <div>
-    {% csrf_token %} 
-    {% for session in sessions %}
-    {% for field in schedule_form %} 
-        {{ session }}
-        {{ field }}
-    {% endfor %}
-            <br>   
-{% endfor %}  
-  
-    </div>
-  <button type='submit' class='edit'> Edit Schedule</button>
-</form>   -->
 
 
 
