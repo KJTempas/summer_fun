@@ -1,0 +1,28 @@
+{% extends 'summer_fun/base.html' %}
+{% load static %}
+{% block content %}
+
+<h2>Update schedule for {{ student }}</h2>
+
+<h4>Current classes for {{ student }} are:</h4><br>
+    {% for s in student_classes %}
+    {{ s.activity.activity_name }}<br>
+    {% endfor %}
+    <br>
+    <h4>Select new classes below</h4>
+
+<form method="POST" action="{% url 'edit_schedule' student.pk  %}" enctype="multipart/form-data">
+    {% csrf_token %} 
+    {% for session in sessions %}
+        {% for field in schedule_form %} 
+            {{ session }}
+            {{ field }}
+    {% endfor %}
+            <br>   
+{% endfor %} 
+  <button type='submit' class='edit'> Edit Schedule</button>
+</form> 
+
+
+{% endblock %}
+
