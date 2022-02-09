@@ -1,6 +1,8 @@
-from django.test import TestCase
+import tempfile
+import filecmp
+import os
 
-# Create your tests here.
+from django.test import TestCase
 from django.urls import reverse
 
 from summer_fun.models import Activity, Student
@@ -43,8 +45,8 @@ class TestAddActivities(TestCase):
     def test_add_activity_does_not_add_duplicate(self):
         #add duplicate of activity in fixtures
         new_activity = {
-            'activity_name': 'Stand Up Paddleboard',
-            'activity_description': 'SUP in the bay'
+            'activity_name': 'SCUBA',
+            'activity_description': 'SCUBA in the bay'
         }
         response = self.client.post(reverse('add_activity'), data= new_activity, follow=True)
         #new_activity should not have added; should be still 3 activities
@@ -105,8 +107,8 @@ class TestSearchActivity(TestCase):
     def test_activity_search_matches_case_insensitive_and_partial(self):
         #search activities that include the letter s
         response = self.client.get(reverse('activity_list') + '?search_term=s')
-        self.assertContains(response, 'Snorkel')
-        self.assertContains(response, 'SUP')
+        self.assertContains(response, 'SCUBA')
+        self.assertContains(response, 'XC Ski')
         self.assertNotContains(response, 'Kayak')
 
     def test_activity_search_no_search_results(self):

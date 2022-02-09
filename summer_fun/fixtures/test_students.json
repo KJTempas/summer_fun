@@ -5,8 +5,7 @@
         "fields":{
             "first_name": "Margaret",
             "last_name": "Atwood",
-            "student_email": "ma@gmail.com"
-           
+            "student_email": "ma@gmail.com"    
         }
     },
     {
@@ -15,8 +14,7 @@
         "fields":{
             "first_name": "Arundhati",
             "last_name": "Roy",
-            "student_email": "ar@gmail.com"
-           
+            "student_email": "ar@gmail.com"       
         }
     },
     {
@@ -25,8 +23,7 @@
         "fields":{
             "first_name": "Joanne",
             "last_name": "Rowling",
-            "student_email": "jr@gmail.com"
-           
+            "student_email": "jr@gmail.com"  
         }
     }
 ]
