@@ -1,0 +1,29 @@
+[
+    {
+        "model":"summer_fun.activity",
+        "pk":1,
+        "fields":{
+            "activity_name": "SCUBA",
+            "activity_description": "Atwood"
+           
+        }
+    },
+    {
+        "model":"summer_fun.activity",
+        "pk":2,
+        "fields":{
+            "activity_name": "XC Ski",
+            "activity_description": "Enjoy the woods in winter"
+           
+        }
+    },
+    {
+        "model":"summer_fun.activity",
+        "pk":3,
+        "fields":{
+            "activity_name": "Snowshoe",
+            "activity_description": "Go off trail in the woods"
+           
+        }
+    },
+]
