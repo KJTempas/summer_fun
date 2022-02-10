@@ -71,6 +71,9 @@ def student_details(request, student_pk):
     else:
         #get info from dbase on this student's classes
         student_classes = Schedule.objects.filter(student = student)
+        print(student_classes)
+        print(student_classes[1].activity)
+        print(student_classes[1].activity.activity_name)
         if student_classes: # if schedule already in dbase
             return render(request, 'summer_fun/student_details.html', { 'student': student, 'student_classes': student_classes})
         else:  #display the blank form  

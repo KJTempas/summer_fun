@@ -10,7 +10,7 @@
     },
     {
         "model":"summer_fun.schedule",
-        "pk":1,
+        "pk":2,
         "fields":{
             "student": 1,
             "activity": 3,
@@ -19,7 +19,7 @@
     },
     {
     "model":"summer_fun.schedule",
-    "pk":1,
+    "pk":3,
     "fields":{
         "student": 1,
         "activity": 2,

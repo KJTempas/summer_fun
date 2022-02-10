@@ -143,4 +143,35 @@ class TestSearchStudent(TestCase):
         self.assertContains(response, all_students_url)
         
 
+class TestAddStudentSchedule(TestCase):
+    fixtures = ['test_schedules', 'test_students', 'test_activities']
 
+    def test_student_schedule_appears_in_student_list(self):
+        pass
+        #response = self.client.get(reverse('student_list'))
+    #template should show student 1 having signed up for SCUBA, Snowshoe and XC Ski
+  #  self.assertContains(response.context['student_classes'], 'SCUBA')
+        #error w below is 'dict' object has no attribute 'student'
+        #self.assertContains(response.context['student_classes'].student.activity_name, 'SCUBA')
+        #error here is KeyError: 'student'
+        #self.assertContains(response.context['student_classes']['student'].activity_name, 'SCUBA')
+        
+
+        # response = self.client.get(reverse('student_list', kwargs={'student_pk' : 1}))
+        # self.assertContains(response.context['student_classes']['student'].activity_name, 'SCUBA')
+
+
+    def test_student_schedule_appears_on_student_details_page(self):
+        #retrieve the schedule for student 1
+        response = self.client.get(reverse('student_details', kwargs = {'student_pk' : 1}))
+        #uses correct template to show results
+        self.assertTemplateUsed(response, 'summer_fun/student_details.html')
+        #self.assertEqual(len(response.context['student_classes']), 3)#AssertionError 1 !=3
+        #student_classes is a queryset
+        #queryset has no attribute 'student' ...or 'activity'
+        #self.assertContains(response.context['student_classes'].student, 'SCUBA')
+#print(student_classes[1].activity.activity_name) from views yields 'Hiking'
+
+        #self.assertContains(response.context['student_classes'][1].activity.activity_name, 'Snowshoe')
+  #AttributeError: 'str' object has no attribute 'status_code'
+        self.assertContains(response.context['student_classes'][1].activity.activity_name, 'Snowshoe')
