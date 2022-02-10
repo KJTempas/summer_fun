@@ -133,10 +133,8 @@ def run_report(request):
         form = ReportForm(request.POST)
         if form.is_valid():
             activity_term = form.cleaned_data['activity_name']
-            print(activity_term)
             act_id = Activity.objects.get(activity_name = activity_term)
             session_num = form.cleaned_data['session_num']
-            print(session_num)
             #may need name__iexact=to get case insensitive matches
             students = Schedule.objects.filter(activity=act_id,session= session_num)
             return render(request, 'summer_fun/report_results.html', {'students': students, 'activity': activity_term , 'session': session_num})
