@@ -166,12 +166,5 @@ class TestAddStudentSchedule(TestCase):
         response = self.client.get(reverse('student_details', kwargs = {'student_pk' : 1}))
         #uses correct template to show results
         self.assertTemplateUsed(response, 'summer_fun/student_details.html')
-        #self.assertEqual(len(response.context['student_classes']), 3)#AssertionError 1 !=3
-        #student_classes is a queryset
-        #queryset has no attribute 'student' ...or 'activity'
-        #self.assertContains(response.context['student_classes'].student, 'SCUBA')
-#print(student_classes[1].activity.activity_name) from views yields 'Hiking'
-
-        #self.assertContains(response.context['student_classes'][1].activity.activity_name, 'Snowshoe')
-  #AttributeError: 'str' object has no attribute 'status_code'
-        self.assertContains(response.context['student_classes'][1].activity.activity_name, 'Snowshoe')
+        self.assertEquals(response.context['student_classes'][1].activity.activity_name, 'Snowshoe')
+   

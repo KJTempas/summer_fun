@@ -145,7 +145,7 @@ def run_report(request):
             return render(request, 'summer_fun/report_results.html', {'students': students, 'activity': activity_term , 'session': session_num})
     else: #GET - just show the form
         form = ReportForm()
-    return render(request, 'summer_fun/run_report.html', {'form': form})
+    return render(request, 'summer_fun/run_report.html', {'form': form}) 
 
 
 
